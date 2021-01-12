@@ -62,7 +62,7 @@
             v-if="closable"
             :class="[textClass]"
           >
-            <button @click="closeAlert">
+            <button @click="closeAlert" class="focus:outline-none">
               <svg
                 class="w-5 h-5 sm:w-5 sm:h-5 mr-3 mb-0.5"
                 xmlns="http://www.w3.org/2000/svg"
