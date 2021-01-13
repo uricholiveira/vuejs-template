@@ -54,9 +54,7 @@
           </svg>
         </div>
         <span class="text-sm font-medium" :class="[textClass]">
-          <slot name="message">
-            {{ message }}
-          </slot>
+          <slot name="message"> {{ message }} </slot>
           <div
             class="flex justify-end -mt-6 -mr-3"
             v-if="closable"
@@ -83,8 +81,8 @@
       </div>
       <div class="bg-gray-100 h-1 rounded-b ml-1.5 mr-2" v-show="progress > 0">
         <div
-          class="bg-gray-400 h-1 rounded-b"
-          :style="{ width: progressBar }"
+          class="bg-gray-400 h-1 rounded-b w-full"
+          :style="progressBar"
         ></div>
       </div>
     </div>
@@ -105,7 +103,8 @@ export default {
   },
   data() {
     return {
-      progress: this.secondsToClose > 0 ? 100 : 0
+      progress: this.secondsToClose > 0 ? 100 : 0,
+      activated: false
     };
   },
   methods: {
@@ -114,11 +113,26 @@ export default {
       this.$emit("update:variant", "success");
       this.$emit("update:show", false);
       this.$emit("update:secondsToClose", 0);
+    },
+    setProgress() {
+      if (this.progress > 0 && this.progress <= 100) {
+        this.teste = Math.round(Math.abs(100 / this.secondsToClose / 10));
+        let interval = setInterval(() => {
+          this.progress =
+            this.progress -
+            Math.round(Math.abs(100 / this.secondsToClose / 10));
+          if (this.progress <= 0) {
+            clearInterval(interval);
+            this.closeAlert();
+            this.$forceUpdate();
+          }
+        }, (this.secondsToClose / 10) * 100);
+      }
     }
   },
   computed: {
     progressBar() {
-      return this.progress;
+      return { width: this.progress + "%" };
     },
     wrapperClass() {
       switch (this.variant) {
@@ -149,7 +163,11 @@ export default {
       }
     }
   },
-  mounted() {}
+  watch: {},
+  created() {},
+  mounted() {
+    this.setProgress();
+  }
 };
 </script>
 

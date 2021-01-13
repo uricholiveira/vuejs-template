@@ -2,18 +2,17 @@
   <button
     class="group relative flex justify-center w-full py-2 px-4 border border-transparent text-sm font-medium
     rounded-md focus:outline-none focus:ring-1 focus:ring-offset-1"
-    :class="[isLoading ? 'opacity-70 cursor-not-allowed' : '']"
-    :disabled="isLoading"
+    :class="[loading ? 'opacity-70 cursor-not-allowed' : '']"
+    :disabled="loading"
     :type="type"
     @click="$emit('click', $event.target.value)"
-    @click.prevent="isLoading = true"
   >
     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
       <slot name="prefix-icon"></slot>
     </span>
     <span
       class="absolute inset-y-0 flex items-center justify-center"
-      v-show="isLoading"
+      v-show="loading"
     >
       <slot name="loading-icon">
         <svg
@@ -36,8 +35,8 @@
       <slot name="sufix-icon"></slot>
     </span>
     <span>
-      <slot name="text" v-if="!isLoading">Button</slot>
-      <span class="text-transparent" v-else-if="isLoading" v-show="isLoading"
+      <slot name="text" v-if="!loading">Button</slot>
+      <span class="text-transparent" v-else-if="loading" v-show="loading"
         >Loading</span
       >
     </span>

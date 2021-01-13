@@ -25,6 +25,7 @@
       @update:message="alert.message = ''"
       @update:show="alert.show = false"
       @update:seconds-to-close="alert.secondsToClose = 0"
+      v-show="alert.show"
     />
     <div
       class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
@@ -104,10 +105,19 @@
                 class="mt-5 bg-indigo-600 hover:bg-indigo-700
     focus:ring-indigo-500 text-white"
                 type="submit"
-                :loading="true"
+                :loading="false"
                 @click.native.prevent="login"
               >
                 <template v-slot:text>Sign in</template>
+              </Button>
+              <Button
+                class="mt-5 bg-indigo-600 hover:bg-indigo-700
+    focus:ring-indigo-500 text-white"
+                type="submit"
+                :loading="alert.show"
+                @click.native.prevent="createAlert"
+              >
+                <template v-slot:text>Alert</template>
               </Button>
             </div>
           </form>
@@ -133,7 +143,7 @@ export default {
       alert: {
         variant: "info",
         message: "Hello alert, from Login.vue",
-        show: true,
+        show: false,
         closable: true,
         secondsToClose: 0
       }
@@ -149,6 +159,11 @@ export default {
         .catch(error => {
           console.log(error.response);
         });
+    },
+    createAlert() {
+      this.alert.message = "Alert clicked!";
+      this.alert.show = true;
+      this.alert.secondsToClose = 7;
     }
   }
 };
